@@ -8,7 +8,7 @@ import javax.swing.table.TableRowSorter;
 public class CollegeInformationPanel extends JPanel 
 {
     private  int currentPage = 1;
-    private  final int pageSize = 5;
+    private  final int pageSize = 20;
 
     private JButton nextButton;
     private JButton prevButton;

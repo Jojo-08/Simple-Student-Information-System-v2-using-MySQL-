@@ -14,7 +14,7 @@ public class DatabaseConnection {
     
     static {
         // Load the properties from the configuration file
-        try (FileInputStream input = new FileInputStream("src/config.properties")) {
+        try (FileInputStream input = new FileInputStream("c:/Users/gerom/Documents/2nd year/2nd SEM/CCC151/SSIS SQL/SSIS_v2_swingmysql/src/config.properties")) {
             Properties prop = new Properties();
             prop.load(input);
             URL = prop.getProperty("db.url", URL);
