@@ -162,10 +162,19 @@ public class ProgramInformationPanel extends JPanel
         tableModel.setRowCount(0); // clear current rows
         for (Program program : programs)
         {
+            String thiscollegeCode;
+            if(program.getCollegeCode() == null)
+            {
+                thiscollegeCode = "N/A";
+            }
+            else
+            {
+                thiscollegeCode = program.getCollegeCode();
+            }
             tableModel.addRow(new Object[]{
                     program.getProgramCode(),
                     program.getProgramName(),
-                    program.getCollegeCode()
+                    thiscollegeCode
             });
         }
 
