@@ -314,26 +314,30 @@ public class CollegeInformationPanel extends JPanel
 
     private  void deleteSelectedColleges()
     {
-        int[] selectedRow = table.getSelectedRows();
-        if(selectedRow.length == 0)
+        int[] selectedRows = table.getSelectedRows();
+        if(selectedRows.length == 0)
         {
             JOptionPane.showMessageDialog(this,"Please select a college");
             return;
         }
-    
+
         int confirm = JOptionPane.showConfirmDialog(this,
                        "Are you sure you want to delete the selected colleges?" 
                        + " Deleting a college will also affect related programs and students.",
                         "Confirm Delete", JOptionPane.YES_NO_OPTION );
-    
+
         if(confirm == JOptionPane.YES_OPTION)
         {
-            
-            for(int row : selectedRow)
-            {
-                String collegeCode = (String) tableModel.getValueAt(row, 0);
-                collegeDAO.deleteCollege(collegeCode);
-                
+            // Collect all college codes to delete first
+            java.util.List<String> codesToDelete = new java.util.ArrayList<>();
+            for (int viewRow : selectedRows) {
+                int modelRow = table.convertRowIndexToModel(viewRow);
+                String collegeCode = (String) tableModel.getValueAt(modelRow, 0);
+                codesToDelete.add(collegeCode);
+            }
+            // Now delete by code
+            for (String code : codesToDelete) {
+                collegeDAO.deleteCollege(code);
             }
             System.out.println("Colleges successfully deleted");
             loadColleges();
