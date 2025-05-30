@@ -294,28 +294,30 @@ public class StudentInformationPanel extends JPanel{
 
     private void deleteSelectedStudent()
     {
-        int[] selectedRow = table.getSelectedRows();
+        int[] selectedRows = table.getSelectedRows();
 
-        if(selectedRow.length == 0)
+        if(selectedRows.length == 0)
         {
-            JOptionPane.showMessageDialog(this, "Please select a student to delete. ");
+            JOptionPane.showMessageDialog(this, "Please select a student to delete.");
             return;
         }
 
-       
-
         int confirm = JOptionPane.showConfirmDialog(this, 
-                        "Are you sure you want to delete student ?",
+                        "Are you sure you want to delete the selected student(s)?",
                         "Confirm Delete", JOptionPane.YES_NO_OPTION);
-        
+
         if(confirm == JOptionPane.YES_OPTION)
         {
-            for(int row : selectedRow)
+            java.util.List<String> idsToDelete = new java.util.ArrayList<>();
+            for(int viewRow : selectedRows)
             {
-             
-                String idNumber = (String) tableModel.getValueAt(row,0);                    
+                int modelRow = table.convertRowIndexToModel(viewRow);
+                String idNumber = (String) tableModel.getValueAt(modelRow, 0);                    
+                idsToDelete.add(idNumber);
+            }
+            for(String idNumber : idsToDelete)
+            {
                 studentDAO.deleteStudent(idNumber);
-                    
             }
             System.out.println("Students successfully deleted");
             loadStudents();
