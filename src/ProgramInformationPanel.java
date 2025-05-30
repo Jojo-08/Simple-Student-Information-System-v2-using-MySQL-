@@ -353,14 +353,13 @@ public class ProgramInformationPanel extends JPanel
     
     private  void deleteSelectedProgram()
     {
-        int[] selectedRow = table.getSelectedRows();
-        if(selectedRow.length == 0)
+        int[] selectedRows = table.getSelectedRows();
+        if(selectedRows.length == 0)
         {
             JOptionPane.showMessageDialog(this,"Please select a program");
             return;
         }
 
-    
         int confirm = JOptionPane.showConfirmDialog(this,
                        "Are you sure you want to delete program ?"
                        + " Deleting a program will also affect related students",
@@ -368,11 +367,17 @@ public class ProgramInformationPanel extends JPanel
     
                         if(confirm == JOptionPane.YES_OPTION)
                         {
-                            for(int row : selectedRow)
+                            // Collect all program codes to delete first
+                            java.util.List<String> codesToDelete = new java.util.ArrayList<>();
+                            for(int viewRow : selectedRows)
                             {
-                                String progCode = (String) tableModel.getValueAt(row,0);
+                                int modelRow = table.convertRowIndexToModel(viewRow);
+                                String progCode = (String) tableModel.getValueAt(modelRow, 0);
+                                codesToDelete.add(progCode);
+                            }
+                            for(String progCode : codesToDelete)
+                            {
                                 programDAO.deleteProgram(progCode);
-            
                             }
                             System.out.println("Program(s) successfully deleted");
                             loadPrograms();
